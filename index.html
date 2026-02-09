@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vava, will you be my valentine ?</title>
+    <style>
+        /* Basic reset and layout */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+            background: #fdeff9;
+            /* Soft gradient backdrop */
+            background: linear-gradient(135deg, #fddb92 0%, #d1fdff 100%);
+        }
+
+        .container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 2rem;
+            color: #333;
+        }
+
+        .buttons {
+            position: relative;
+            display: flex;
+            gap: 1rem;
+        }
+
+        button {
+            padding: 0.8rem 1.8rem;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        #yesBtn {
+            background-color: #ff6f91;
+            color: white;
+        }
+
+        #yesBtn:hover {
+            transform: scale(1.05);
+        }
+
+        #noBtn {
+            background-color: #ddd;
+            color: #333;
+        }
+
+        #noBtn:hover {
+            transform: translate(0, 0);
+        }
+
+        /* Message overlay */
+        #messageOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+
+        #messageBox {
+            background: white;
+            padding: 2rem 3rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            position: relative;
+        }
+
+        #messageBox h2 {
+            margin: 0;
+            margin-bottom: 1rem;
+            font-size: 2rem;
+            color: #ff6f91;
+        }
+
+        /* Falling hearts animation */
+        .heart {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%23ff6f91%22%3E%3Cpath%20d%3D%22M12%2021.35l-1.45-1.32C5.4%2015.36%202%2012.28%202%208.5%202%205.42%204.42%203%207.5%203c1.74%200%203.41%201.01%204.5%202.09C13.09%204.01%2014.76%203%2016.5%203%2019.58%203%2022%205.42%2022%208.5c0%203.78-3.4%206.86-8.55%2011.54L12%2021.35z%22/%3E%3C/svg%3E') no-repeat center;
+            background-size: contain;
+            animation: fall linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-10%);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(110vh);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>vava, will you be my valentine ?</h1>
+        <div class="buttons">
+            <button id="yesBtn">Yes</button>
+            <button id="noBtn">No</button>
+        </div>
+    </div>
+    <!-- Message overlay -->
+    <div id="messageOverlay">
+        <div id="messageBox">
+            <h2>You said Yes! 💖</h2>
+            <p>You just made someone's day a little brighter! Happy Valentine's Day!</p>
+        </div>
+    </div>
+
+    <script>
+        // Get references
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const overlay = document.getElementById('messageOverlay');
+
+        // Yes button click handler
+        yesBtn.addEventListener('click', () => {
+            // Show the overlay
+            overlay.style.display = 'flex';
+            // Generate hearts
+            generateHearts(30);
+        });
+
+        // No button event to move randomly within window bounds
+        noBtn.addEventListener('mouseover', moveButton);
+        noBtn.addEventListener('click', moveButton);
+
+        function moveButton() {
+            // Determine viewport size
+            const padding = 20;
+            const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+            const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+            const randX = Math.floor(Math.random() * maxX);
+            const randY = Math.floor(Math.random() * maxY);
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = randX + 'px';
+            noBtn.style.top = randY + 'px';
+        }
+
+        // Hearts animation generator
+        function generateHearts(count) {
+            for (let i = 0; i < count; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.style.left = Math.random() * 100 + '%';
+                // Random duration and delay
+                const duration = 5 + Math.random() * 3;
+                const delay = Math.random() * 2;
+                heart.style.animationDuration = duration + 's';
+                heart.style.animationDelay = delay + 's';
+                document.body.appendChild(heart);
+                // Remove the heart after its animation completes
+                setTimeout(() => {
+                    heart.remove();
+                }, (duration + delay) * 1000);
+            }
+        }
+    </script>
+</body>
+</html>
